@@ -16,6 +16,15 @@ class UsersModel {
   show (req, res) {
     return usersDB;
   }
+
+  showByID(id) {
+    return usersDB.filter(user => user.id == id);
+  }
+
+  edit(updatedUser, id){
+    const index = usersDB.findIndex(user => user.id == id);
+    return usersDB[index] = {id, ...updatedUser};
+  }
 }
 
 module.exports = new UsersModel();
