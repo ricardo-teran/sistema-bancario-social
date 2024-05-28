@@ -14,4 +14,7 @@ router.get('/:id', usersController.showByID);
 /* PUT editar user */
 router.put('/:id', usersController.edit);
 
+/* DELETE eliminar user */
+router.delete('/:id', usersController.delete);
+
 module.exports = router;

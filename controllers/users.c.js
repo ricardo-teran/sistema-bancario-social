@@ -37,7 +37,18 @@ class UsersController {
       return res.status(404).send(`No se encontró el usuario con id: ${id}`);
     }
 
-    res.send(usersModel.edit(updatedUser, id));
+    res.status(200).send(usersModel.edit(updatedUser, id));
+  }
+
+  delete(req, res) {
+    const id = req.params.id;
+
+    const result = usersModel.showByID(id);
+    if (result.length === 0) {
+      return res.status(404).send(`No se encontró el usuario con id: ${id}`);
+    }
+    
+    res.status(200).send(usersModel.delete(id));
   }
 }
 

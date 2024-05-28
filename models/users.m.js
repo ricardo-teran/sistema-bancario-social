@@ -8,12 +8,12 @@ let usersDB = [
 ]
 
 class UsersModel {
-  create (user) {
+  create(user) {
     user.id = uuidv4();
     usersDB.push(user);
   }
 
-  show (req, res) {
+  show(req, res) {
     return usersDB;
   }
 
@@ -21,9 +21,15 @@ class UsersModel {
     return usersDB.filter(user => user.id == id);
   }
 
-  edit(updatedUser, id){
+  edit(updatedUser, id) {
     const index = usersDB.findIndex(user => user.id == id);
-    return usersDB[index] = {id, ...updatedUser};
+    return usersDB[index] = { id, ...updatedUser };
+  }
+
+  delete(id) {
+    const index = usersDB.findIndex(user => user.id == id);
+    usersDB.splice(index, 1);
+    return usersDB;
   }
 }
 
