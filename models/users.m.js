@@ -13,7 +13,7 @@ class UsersModel {
     usersDB.push(user);
   }
 
-  show(req, res) {
+  show() {
     return usersDB;
   }
 
