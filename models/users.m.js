@@ -21,6 +21,10 @@ class UsersModel {
     return usersDB.filter(user => user.id == id);
   }
 
+  areUsersValid(userIds) {
+    return userIds.every(id => usersDB.some(user => user.id == id));
+  }
+
   edit(updatedUser, id) {
     const index = usersDB.findIndex(user => user.id == id);
     return usersDB[index] = { id, ...updatedUser };
