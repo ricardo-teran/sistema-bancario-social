@@ -1,4 +1,5 @@
 var loansModel = require("../models/loans.m");
+var usersModel = require("../models/users.m");
 
 class LoansController {
   create(req, res) {
@@ -8,10 +9,10 @@ class LoansController {
       return res.status(405).send("Faltan datos del préstamo por agregar.");
     }
 
-    const result = loansModel.showByID(loan.userId);
+    const result = usersModel.showByID(loan.userId);
 
     if (result.length === 0) {
-      return res.status(404).send(`No se encontró el préstamo con id: ${loan.userId}`);
+      return res.status(404).send(`No se encontró el usuario con id: ${loan.userId}`);
     }
 
     loan = { ...loan, nextPaymentDate: new Date(req.body.nextPaymentDate), createdAt: new Date() }
@@ -40,18 +41,26 @@ class LoansController {
     const id = req.params.id;
     const updatedLoan = req.body;
 
-    const result = loansModel.showByID(id);
-    if (result.length === 0) {
+    const loanResult = loansModel.showByID(id);
+    if (loanResult.length === 0) {
       return res.status(404).send(`No se encontró el préstamo con id: ${id}`);
+    }
+
+    if (updatedLoan.userId) {
+      const userResult = usersModel.showByID(updatedLoan.userId);
+      if (userResult.length === 0) {
+        return res.status(404).send(`No se encontró el usuario con id: ${updatedLoan.userId}`);
+      }
     }
 
     const loan = {
       id: id,
-      userId: updatedLoan.userId ? updatedLoan.userId : result[0].userId,
-      amount: updatedLoan.amount ? updatedLoan.amount : result[0].amount,
-      interestRate: updatedLoan.interestRate ? updatedLoan.interestRate : result[0].interestRate,
-      nextPaymentDate: updatedLoan.nextPaymentDate ? updatedLoan.nextPaymentDate : result[0].nextPaymentDate,
-      balance: updatedLoan.balance ? updatedLoan.balance : result[0].balance,
+      userId: updatedLoan.userId ? updatedLoan.userId : loanResult[0].userId,
+      amount: updatedLoan.amount ? updatedLoan.amount : loanResult[0].amount,
+      interestRate: updatedLoan.interestRate ? updatedLoan.interestRate : loanResult[0].interestRate,
+      nextPaymentDate: updatedLoan.nextPaymentDate ? updatedLoan.nextPaymentDate : loanResult[0].nextPaymentDate,
+      createdAt: loanResult[0].createdAt,
+      balance: updatedLoan.balance ? updatedLoan.balance : loanResult[0].balance,
     };
 
     res.status(200).send(loansModel.edit(loan, id));

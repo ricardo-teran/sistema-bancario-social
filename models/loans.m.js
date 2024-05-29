@@ -6,8 +6,9 @@ let loansDB = [
     "userId": 1,
     "amount": 2000,
     "interestRate": 5,
-    "nextPaymentDate": "2024-07-29",
     "balance": -2500,
+    "nextPaymentDate": "2024-07-29",
+    "createdAt": "2024-07-29",
  }
 ]
 
