@@ -17,4 +17,7 @@ router.put('/:id', cooperativesController.edit);
 /* DELETE eliminar cooperative */
 router.delete('/:id', cooperativesController.delete);
 
+/* PUT agregar usuario a cooperative */
+router.put('/add-user/:id', cooperativesController.addUser);
+
 module.exports = router;

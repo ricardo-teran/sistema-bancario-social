@@ -8,7 +8,7 @@ let cooperativesDB = [
     "interestRate": 4,
     "balance": 500,
     "createdAt": "2024-03-10",
- }
+  }
 ]
 
 class CooperativesModel {
@@ -34,6 +34,11 @@ class CooperativesModel {
     const index = cooperativesDB.findIndex(cooperative => cooperative.id == id);
     cooperativesDB.splice(index, 1);
     return cooperativesDB;
+  }
+
+  addUser(cooperative, userId) {
+    const index = cooperativesDB.findIndex(cooperative => cooperative.id == userId);
+    return cooperativesDB[index] = cooperative;
   }
 }
 
