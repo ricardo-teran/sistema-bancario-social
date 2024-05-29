@@ -76,6 +76,18 @@ class LoansController {
 
     res.status(200).send(loansModel.delete(id));
   }
+
+  getNextPaymentDate(req, res) {
+    const id = req.params.id;
+
+    const result = loansModel.showByID(id);
+
+    if (result.length === 0) {
+      return res.status(404).send(`No se encontró el préstamo con id: ${id}`);
+    }
+
+    res.status(200).send(result[0].nextPaymentDate);
+  }
 }
 
 module.exports = new LoansController();

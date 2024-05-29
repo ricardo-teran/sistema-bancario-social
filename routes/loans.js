@@ -17,4 +17,7 @@ router.put('/:id', loansController.edit);
 /* DELETE eliminar loan */
 router.delete('/:id', loansController.delete);
 
+/* GET próxima fecha de pago de loan */
+router.get('/next-payment-date/:id', loansController.getNextPaymentDate);
+
 module.exports = router;
