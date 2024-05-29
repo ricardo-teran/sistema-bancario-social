@@ -50,11 +50,11 @@ class UsersController {
     if (result.length === 0) {
       return res.status(404).send(`No se encontró el usuario con id: ${id}`);
     }
-    
+
     res.status(200).send(usersModel.delete(id));
   }
 
-  getAccounts(req, res){
+  getAccounts(req, res) {
     const id = req.params.id;
     const result = usersModel.showByID(id);
     if (result.length === 0) {
@@ -62,8 +62,8 @@ class UsersController {
     }
 
     const loans = loansModel.showByUserID(id);
-    const savings =  savingsModel.showByUserID(id);
-    const cooperatives =  cooperativeModel.showByUserID(id);
+    const savings = savingsModel.showByUserID(id);
+    const cooperatives = cooperativeModel.showByUserID(id);
 
     const accounts = {
       loans: loans,
@@ -71,7 +71,59 @@ class UsersController {
       cooperatives: cooperatives
     }
 
-    res.status(200).send(accounts); 
+    res.status(200).send(accounts);
+  }
+
+  summaryAccounts(req, res) {
+    const id = req.params.id;
+    const result = usersModel.showByID(id);
+    if (result.length === 0) {
+      return res.status(404).send(`No se encontró el usuario con id: ${id}`);
+    }
+
+    const loans = loansModel.showByUserID(id);
+    const savings = savingsModel.showByUserID(id);
+    const cooperatives = cooperativeModel.showByUserID(id);
+
+    const totalLoanBalance = loans.reduce((sum, loan) => sum + loan.balance, 0);
+    const totalSavingsBalance = savings.reduce((sum, saving) => sum + saving.balance, 0);
+    const totalCooperativeBalance = cooperatives.reduce((sum, cooperative) => sum + cooperative.balance, 0);
+
+
+    const totalLoanInterest = loans.reduce((sum, loan) => sum + loan.interestRate, 0);
+    const averageLoanInterestRate = loans.length > 0 ? totalLoanInterest / loans.length : 0;
+
+    const totalSavingsInterest = savings.reduce((sum, saving) => sum + saving.interestRate, 0);
+    const averageSavingsInterestRate = savings.length > 0 ? totalSavingsInterest / savings.length : 0;
+
+    const totalCooperativeInterest = cooperatives.reduce((sum, cooperative) => sum + cooperative.interestRate, 0);
+    const averageCooperativeInterestRate = cooperatives.length > 0 ? totalCooperativeInterest / cooperatives.length : 0;
+
+
+    const averageLoanBalance = loans.length > 0 ? totalLoanBalance / loans.length : 0;
+    const averageSavingsBalance = savings.length > 0 ? totalSavingsBalance / savings.length : 0;
+    const averageCooperativeBalance = cooperatives.length > 0 ? totalCooperativeBalance / cooperatives.length : 0;
+
+    const accounts =
+    {
+      loans: {
+        balance: totalLoanBalance,
+        averageInterestRate: averageLoanInterestRate,
+        averageBalance: averageLoanBalance
+      },
+      savings: {
+        balance: totalSavingsBalance,
+        averageInterestRate: averageSavingsInterestRate,
+        averageBalance: averageSavingsBalance
+      },
+      cooperatives: {
+        balance: totalCooperativeBalance,
+        averageInterestRate: averageCooperativeInterestRate,
+        averageBalance: averageCooperativeBalance
+      }
+    };
+
+    res.status(200).send(accounts);
   }
 }
 
