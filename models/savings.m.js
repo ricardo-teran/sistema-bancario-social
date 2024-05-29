@@ -34,6 +34,10 @@ class SavingsModel {
     savingsDB.splice(index, 1);
     return savingsDB;
   }
+
+  showByUserID(id) {
+    return savingsDB.filter(saving => saving.userId == id);
+  }
 }
 
 module.exports = new SavingsModel();

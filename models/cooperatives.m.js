@@ -40,6 +40,10 @@ class CooperativesModel {
     const index = cooperativesDB.findIndex(cooperative => cooperative.id == userId);
     return cooperativesDB[index] = cooperative;
   }
+
+  showByUserID(id) {
+    return cooperativesDB.filter(cooperative => cooperative.members == id);
+  }
 }
 
 module.exports = new CooperativesModel();

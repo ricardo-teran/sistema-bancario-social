@@ -17,4 +17,7 @@ router.put('/:id', usersController.edit);
 /* DELETE eliminar user */
 router.delete('/:id', usersController.delete);
 
+/* GET cuentas del user */
+router.get('/accounts/:id', usersController.getAccounts);
+
 module.exports = router;

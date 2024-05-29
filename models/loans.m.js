@@ -9,7 +9,7 @@ let loansDB = [
     "balance": -2500,
     "nextPaymentDate": "2024-07-29",
     "createdAt": "2024-07-29",
- }
+  }
 ]
 
 class LoansModel {
@@ -35,6 +35,10 @@ class LoansModel {
     const index = loansDB.findIndex(loan => loan.id == id);
     loansDB.splice(index, 1);
     return loansDB;
+  }
+
+  showByUserID(id) {
+    return loansDB.filter(loan => loan.userId == id);
   }
 }
 
