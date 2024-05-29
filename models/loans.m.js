@@ -25,9 +25,9 @@ class LoansModel {
     return loansDB.filter(loan => loan.id == id);
   }
 
-  edit(updatedUser, id) {
+  edit(loan, id) {
     const index = loansDB.findIndex(loan => loan.id == id);
-    return loansDB[index] = { id, ...updatedUser };
+    return loansDB[index] = loan;
   }
 
   delete(id) {

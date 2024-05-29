@@ -3,10 +3,15 @@ var loansModel = require("../models/loans.m");
 class LoansController {
   create(req, res) {
     let loan = req.body;
-    console.log("loan");
 
     if (!loan.userId || !loan.amount || !loan.interestRate || !loan.nextPaymentDate || !loan.balance) {
       return res.status(405).send("Faltan datos del préstamo por agregar.");
+    }
+
+    const result = loansModel.showByID(loan.userId);
+
+    if (result.length === 0) {
+      return res.status(404).send(`No se encontró el préstamo con id: ${loan.userId}`);
     }
 
     loan = { ...loan, nextPaymentDate: new Date(req.body.nextPaymentDate), createdAt: new Date() }
@@ -31,7 +36,6 @@ class LoansController {
     res.status(200).send(result);
   }
 
-
   edit(req, res) {
     const id = req.params.id;
     const updatedLoan = req.body;
@@ -41,7 +45,16 @@ class LoansController {
       return res.status(404).send(`No se encontró el préstamo con id: ${id}`);
     }
 
-    res.status(200).send(loansModel.edit(updatedLoan, id));
+    const loan = {
+      id: id,
+      userId: updatedLoan.userId ? updatedLoan.userId : result[0].userId,
+      amount: updatedLoan.amount ? updatedLoan.amount : result[0].amount,
+      interestRate: updatedLoan.interestRate ? updatedLoan.interestRate : result[0].interestRate,
+      nextPaymentDate: updatedLoan.nextPaymentDate ? updatedLoan.nextPaymentDate : result[0].nextPaymentDate,
+      balance: updatedLoan.balance ? updatedLoan.balance : result[0].balance,
+    };
+
+    res.status(200).send(loansModel.edit(loan, id));
   }
 
   delete(req, res) {
