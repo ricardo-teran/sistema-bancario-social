@@ -2,9 +2,9 @@ const { v4: uuidv4 } = require('uuid');
 
 let cooperativesDB = [
   {
-    "id": 1,
+    "id": "1",
     "name": "Cooperativa ABC",
-    "members": [1],
+    "members": ["1"],
     "interestRate": 4,
     "balance": 500,
     "createdAt": "2024-03-10",
@@ -42,7 +42,7 @@ class CooperativesModel {
   }
 
   showByUserID(id) {
-    return cooperativesDB.filter(cooperative => cooperative.members == id);
+    return cooperativesDB.filter(cooperative => cooperative.members.includes(id));
   }
 }
 

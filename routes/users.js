@@ -20,10 +20,7 @@ router.delete('/:id', usersController.delete);
 /* GET cuentas del user */
 router.get('/accounts/:id', usersController.getAccounts);
 
-/* GET cuentas del user */
-router.get('/accounts/:id', usersController.getAccounts);
-
-/* GET cuentas del user */
+/* GET resumen de cuentas del user */
 router.get('/summary-accounts/:id', usersController.summaryAccounts);
 
 module.exports = router;
