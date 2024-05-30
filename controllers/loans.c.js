@@ -86,7 +86,8 @@ class LoansController {
       return res.status(404).send(`No se encontró el préstamo con id: ${id}`);
     }
 
-    res.status(200).send(result[0].nextPaymentDate);
+    // res.status(200).send(result[0].nextPaymentDate);
+    res.status(200).render('next-payment-date', { title: `Cuenta con id: ${id}`, amount: result[0].nextPaymentDate });
   }
 }
 

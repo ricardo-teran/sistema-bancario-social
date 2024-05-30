@@ -61,17 +61,20 @@ class UsersController {
       return res.status(404).send(`No se encontró el usuario con id: ${id}`);
     }
 
-    const loans = loansModel.showByUserID(id);
-    const savings = savingsModel.showByUserID(id);
-    const cooperatives = cooperativeModel.showByUserID(id);
+    const loansAccount = loansModel.showByUserID(id);
+    const savingsAccount = savingsModel.showByUserID(id);
+    const cooperativesAccount = cooperativeModel.showByUserID(id);
 
     const accounts = {
-      loans: loans,
-      savings: savings,
-      cooperatives: cooperatives
+      loans: loansAccount,
+      savings: savingsAccount,
+      cooperatives: cooperativesAccount
     }
 
-    res.status(200).send(accounts);
+    const { loans, savings, cooperatives } = accounts;
+
+    res.status(200).render('accounts', { title: 'Cuentas', name: result[0].name, loans, savings, cooperatives });
+    // res.status(200).send(accounts);
   }
 
   summaryAccounts(req, res) {
@@ -81,28 +84,28 @@ class UsersController {
       return res.status(404).send(`No se encontró el usuario con id: ${id}`);
     }
 
-    const loans = loansModel.showByUserID(id);
-    const savings = savingsModel.showByUserID(id);
-    const cooperatives = cooperativeModel.showByUserID(id);
+    const loansAccount = loansModel.showByUserID(id);
+    const savingsAccount = savingsModel.showByUserID(id);
+    const cooperativesAccount = cooperativeModel.showByUserID(id);
 
-    const totalLoanBalance = loans.reduce((sum, loan) => sum + loan.balance, 0);
-    const totalSavingsBalance = savings.reduce((sum, saving) => sum + saving.balance, 0);
-    const totalCooperativeBalance = cooperatives.reduce((sum, cooperative) => sum + cooperative.balance, 0);
-
-
-    const totalLoanInterest = loans.reduce((sum, loan) => sum + loan.interestRate, 0);
-    const averageLoanInterestRate = loans.length > 0 ? totalLoanInterest / loans.length : 0;
-
-    const totalSavingsInterest = savings.reduce((sum, saving) => sum + saving.interestRate, 0);
-    const averageSavingsInterestRate = savings.length > 0 ? totalSavingsInterest / savings.length : 0;
-
-    const totalCooperativeInterest = cooperatives.reduce((sum, cooperative) => sum + cooperative.interestRate, 0);
-    const averageCooperativeInterestRate = cooperatives.length > 0 ? totalCooperativeInterest / cooperatives.length : 0;
+    const totalLoanBalance = loansAccount.reduce((sum, loan) => sum + loan.balance, 0);
+    const totalSavingsBalance = savingsAccount.reduce((sum, saving) => sum + saving.balance, 0);
+    const totalCooperativeBalance = cooperativesAccount.reduce((sum, cooperative) => sum + cooperative.balance, 0);
 
 
-    const averageLoanBalance = loans.length > 0 ? totalLoanBalance / loans.length : 0;
-    const averageSavingsBalance = savings.length > 0 ? totalSavingsBalance / savings.length : 0;
-    const averageCooperativeBalance = cooperatives.length > 0 ? totalCooperativeBalance / cooperatives.length : 0;
+    const totalLoanInterest = loansAccount.reduce((sum, loan) => sum + loan.interestRate, 0);
+    const averageLoanInterestRate = loansAccount.length > 0 ? totalLoanInterest / loansAccount.length : 0;
+
+    const totalSavingsInterest = savingsAccount.reduce((sum, saving) => sum + saving.interestRate, 0);
+    const averageSavingsInterestRate = savingsAccount.length > 0 ? totalSavingsInterest / savingsAccount.length : 0;
+
+    const totalCooperativeInterest = cooperativesAccount.reduce((sum, cooperative) => sum + cooperative.interestRate, 0);
+    const averageCooperativeInterestRate = cooperativesAccount.length > 0 ? totalCooperativeInterest / cooperativesAccount.length : 0;
+
+
+    const averageLoanBalance = loansAccount.length > 0 ? totalLoanBalance / loansAccount.length : 0;
+    const averageSavingsBalance = savingsAccount.length > 0 ? totalSavingsBalance / savingsAccount.length : 0;
+    const averageCooperativeBalance = cooperativesAccount.length > 0 ? totalCooperativeBalance / cooperativesAccount.length : 0;
 
     const accounts =
     {
@@ -123,7 +126,10 @@ class UsersController {
       }
     };
 
-    res.status(200).send(accounts);
+    const { loans, savings, cooperatives } = accounts;
+
+    res.status(200).render('summary-accounts', { title: 'Resumen de cuentas', name: result[0].name, loans, savings, cooperatives });
+    // res.status(200).send(accounts);
   }
 }
 
